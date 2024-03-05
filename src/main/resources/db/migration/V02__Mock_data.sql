@@ -1,0 +1,10 @@
+insert into product (id, name) values ('c40366ef-b0d7-4f66-821b-4dd2717a64f1', 'Creamers - 10%');
+insert into product (id, name) values ('c8b68ab9-b4d0-480c-a96c-dd0aef8f2382', 'Numi - Assorted Teas');
+insert into product (id, name) values ('2305a312-3b3b-46b0-8a8c-c4a9264f9cd6', 'Cheese - St. Andre');
+insert into product (id, name) values ('0aab50a7-d485-439d-be1d-bdd822f48259', 'Wine - Saint - Bris 2002, Sauv');
+insert into product (id, name) values ('d1a82214-cd16-4522-aee2-9e443628cc8a', 'Sauce - Chili');
+insert into product (id, name) values ('8c1e7c7a-995d-424f-8176-0b0abe5f0a87', 'Chips - Assorted');
+insert into product (id, name) values ('c66a955b-a38b-4cd9-b0f0-e9f82a0b4e77', 'Wine - Two Oceans Cabernet');
+insert into product (id, name) values ('af46de60-b3e9-43b0-8355-3784284f537c', 'Thyme - Lemon, Fresh');
+insert into product (id, name) values ('efc4465a-2d19-4a7b-b8d7-7c69a9237372', 'Pineapple - Golden');
+insert into product (id, name) values ('fce96981-9425-4683-9170-04c226eb064d', 'Wasabi Paste');

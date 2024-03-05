@@ -1,0 +1,11 @@
+.message-container.notification {
+    position: fixed;
+    bottom: 50px;
+    width: 80vw;
+    left: 10vw;
+    visibility: hidden;
+}
+
+.message-container.notification.active {
+    visibility: initial;
+}

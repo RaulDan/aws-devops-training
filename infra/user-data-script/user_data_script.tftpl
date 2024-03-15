@@ -1,0 +1,44 @@
+#!/bin/bash
+
+
+sudo yum clean all
+sudo yum update -y
+
+sudo yum install -y java-11-amazon-corretto
+
+cd /opt
+sudo mkdir online-shop-jar
+cd ./online-shop-jar
+sudo wget https://github.com/msg-CareerPaths/aws-devops-demo-app/releases/download/v0.0.1/online-shop-v0.0.1.jar
+sudo groupadd -r jarGroup
+sudo useradd -r -s /bin/false -g jarGroup jarUser
+sudo chown -R jarUser:jarGroup /opt/online-shop-jar/
+sudo cat <<'EOF' | sudo tee /etc/systemd/system/onlineShopJar.service
+[Unit]
+Description=Manage Java service
+
+[Service]
+WorkingDirectory=/opt/online-shop-jar
+ExecStart=/bin/java -Xms128m -Xmx256m -jar online-shop-v0.0.1.jar
+User=jarUser
+Type=simple
+Restart=on-failure
+RestartSec=10
+
+Environment="SPRING_DATASOURCE_USERNAME=${postgres_user}"
+Environment="SPRING_DATASOURCE_PASSWORD=${postgres_password}"
+Environment="SPRING_DATASOURCE_URL=jdbc:postgresql://${postgres_url}/postgres"
+Environment="SPRING_SESSION_STORETYPE=redis"
+Environment="SPRING_REDIS_HOST=${redis_url}"
+Environment="SPRING_REDIS_PORT=6379"
+Environment="SPRING_SESSION_REDIS_CONFIGUREACTION=none"
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+
+
+sudo systemctl daemon-reload
+sudo systemctl enable onlineShopJar
+sudo systemctl start onlineShopJar.service

@@ -1,0 +1,14 @@
+{
+  "name": "infra",
+  "version": "1.0.0",
+  "dependencies": {
+  },
+  "scripts": {
+    "init": "terraform init",
+    "format": "terraform fmt",
+    "validate": "terraform validate",
+    "plan": "terraform plan",
+    "apply": "terraform apply -auto-approve",
+    "destroy": "terraform destroy -auto-approve"
+  }
+}

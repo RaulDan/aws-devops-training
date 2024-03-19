@@ -17,7 +17,6 @@ jobs:
       - name: Confiugre AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          audience: sts.amazonaws.com.cn
           aws-region: us-east-1
           role-session-name: connect-session
           role-to-assume: arn:aws:iam::730335485292:role/OnlineShopCiCdPipeline

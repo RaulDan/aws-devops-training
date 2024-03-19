@@ -52,7 +52,8 @@ resource "aws_iam_role_policy" "gha_oidc_terraform_permissions" {
           "ecr:UploadLayerPart",
           "ecr:InitiateLayerUpload",
           "ecr:BatchCheckLayerAvailability",
-          "ecr:PutImage"
+          "ecr:PutImage",
+          "ecr:GetAuthorizationToken"
         ],
         "Resource": "*"
       }

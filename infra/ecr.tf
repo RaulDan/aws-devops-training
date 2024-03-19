@@ -38,7 +38,6 @@ resource "aws_iam_role" "cicd_pipeline" {
   })
 }
 
-
 resource "aws_iam_role_policy" "gha_oidc_terraform_permissions" {
   name = "gha_oidc_terraform_permissions"
   role = aws_iam_role.cicd_pipeline.id

@@ -32,7 +32,7 @@ resource "aws_iam_role" "cicd_pipeline" {
             "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
           },
           "StringLike" : {
-            "token.actions.githubusercontent.com:sub" : ["repo:RaulDan/$aws-devops-training:*"]
+            "token.actions.githubusercontent.com:sub" : ["repo:RaulDan/aws-devops-training:*"]
           }
         }
       }

@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: 'postgres:12-alpine'
+    hostname: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - online-shop-network
+  redis:
+    image: 'redis:4.0-alpine'
+    ports:
+      - "6379:6379"
+    networks:
+      - online-shop-network
+  online-shop:
+    image: 'online-shop-image'
+    container_name: 'online-shop-container'
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_SESSION_STORETYPE: redis
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+      SPRING_SESSION_REDIS_CONFIGUREACTION: none
+      WAIT_HOSTS: redis:6379,postgres:5432
+      WAIT_TIMEOUT: 120
+    networks:
+      - online-shop-network
+networks:
+  online-shop-network:

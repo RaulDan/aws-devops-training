@@ -28,11 +28,9 @@ resource "aws_iam_role" "cicd_pipeline" {
         },
         "Action" : "sts:AssumeRoleWithWebIdentity",
         "Condition" : {
-          "StringEquals" : {
-            "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
-          },
           "StringLike" : {
-            "token.actions.githubusercontent.com:sub" : ["repo:RaulDan/aws-devops-training:*"]
+            "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+            "token.actions.githubusercontent.com:sub" : ["https://github.com/aws-actions/configure-aws-credentials:*"]
           }
         }
       }

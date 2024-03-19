@@ -24,7 +24,7 @@ resource "aws_iam_role" "cicd_pipeline" {
       {
         "Effect" : "Allow",
         "Principal" : {
-          "Federated" : "${aws_iam_openid_connect_provider.github_actions.arn}"
+          "Federated" : aws_iam_openid_connect_provider.github_actions.arn
         },
         "Action" : "sts:AssumeRoleWithWebIdentity",
         "Condition" : {
@@ -32,7 +32,7 @@ resource "aws_iam_role" "cicd_pipeline" {
             "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
           },
           "StringLike" : {
-            "token.actions.githubusercontent.com:sub" : ["repo:raulc/${aws_ecr_repository.online-shop-repo.name}:*"]
+            "token.actions.githubusercontent.com:sub" : ["repo:RaulDan/$aws-devops-training:*"]
           }
         }
       }

@@ -15,7 +15,7 @@ jobs:
       - name: Git clone repository
         uses: actions/checkout@v3
       - name: Confiugre AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: us-east-1
           role-session-name: connect-session

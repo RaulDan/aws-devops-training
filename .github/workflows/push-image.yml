@@ -23,8 +23,12 @@ jobs:
       - name: Login to ECR Repo
         run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 730335485292.dkr.ecr.us-east-1.amazonaws.com
       - name: Build image
-        run: docker build -t online-shop-image-repo .
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: docker build -t online-shop-image-repo:$IMAGE_TAG .
       - name: Tag docker image
-        run: docker tag online-shop-image-repo:latest 730335485292.dkr.ecr.us-east-1.amazonaws.com/online-shop-image-repo:${{ github.head_ref }}
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: docker tag online-shop-image-repo 730335485292.dkr.ecr.us-east-1.amazonaws.com/online-shop-image-repo:$IMAGE_TAG
       - name: Push Docker image
-        run: docker push 730335485292.dkr.ecr.us-east-1.amazonaws.com/online-shop-image-repo:${{ github.head_ref }}
+        run: docker push 730335485292.dkr.ecr.us-east-1.amazonaws.com/online-shop-image-repo:$IMAGE_TAG

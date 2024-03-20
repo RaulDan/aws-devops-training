@@ -31,4 +31,6 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: docker tag online-shop-image-repo:$IMAGE_TAG 730335485292.dkr.ecr.us-east-1.amazonaws.com/online-shop-image-repo:$IMAGE_TAG
       - name: Push Docker image
+        env:
+          IMAGE_TAG: ${{ github.sha }}
         run: docker push 730335485292.dkr.ecr.us-east-1.amazonaws.com/online-shop-image-repo:$IMAGE_TAG

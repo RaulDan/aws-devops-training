@@ -14,7 +14,5 @@ RUN mvn install
 FROM amazoncorretto:17-alpine
 WORKDIR /opt/online-shop
 COPY --from=backend /backend/target/online-shop-0.0.1-SNAPSHOT.jar ./online-shop.jar
-ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.12.1/wait .
-RUN chmod +x ./wait
-CMD ./wait && java -jar online-shop.jar
+CMD  java -jar online-shop.jar
 EXPOSE 8080

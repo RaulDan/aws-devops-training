@@ -38,8 +38,8 @@ resource "aws_iam_role" "cicd_pipeline" {
   })
 }
 
-resource "aws_iam_role_policy" "gha_oidc_terraform_permissions" {
-  name = "gha_oidc_terraform_permissions"
+resource "aws_iam_role_policy" "git-push-image-policy" {
+  name = "git-push-image-policy"
   role = aws_iam_role.cicd_pipeline.id
 
   policy = jsonencode({
@@ -61,13 +61,46 @@ resource "aws_iam_role_policy" "gha_oidc_terraform_permissions" {
   })
 }
 
-#resource "aws_iam_role_policy_attachment" "attach_ecr_policy" {
-#  policy_arn = aws_iam_policy.ecr_policy.arn
-#  role       = aws_iam_role.cicd_pipeline.name
-#}
+resource "aws_iam_role" "ec2_pull_docker_image_role" {
+  name = "EC2PullDockerImages"
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "ec2.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
+}
 
-#resource "aws_iam_openid_connect_provider" "github-oidc" {
-#  client_id_list  = ["sts.amazonaws.com.cn"]
-#  thumbprint_list = ["ffffffffffffffffffffffffffffffffffffffff"]
-#  url             = "https://token.actions.githubusercontent.com"
-#}
+resource "aws_iam_role_policy" "ec2_pull_docker_images_policy" {
+  name = "EC2PullDockerImagesPolicy"
+  role   = aws_iam_role.ec2_pull_docker_image_role.id
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "ecr:GetAuthorizationToken",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:GetRepositoryPolicy",
+          "ecr:DescribeRepositories",
+          "ecr:ListImages",
+          "ecr:DescribeImages",
+          "ecr:BatchGetImage"
+        ],
+        "Resource": "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_instance_profile" "ec2_profile" {
+  role = aws_iam_role.ec2_pull_docker_image_role.name
+}

@@ -2,8 +2,10 @@ name: Push Docker Image for ECR
 
 on:
   push:
-    branches: ["module-3"]
+    branches: ["module-3-part-1]
 
+env:
+  IMAGE_TAG: ${{ github.sha }}
 permissions:
   id-token: write
   contents: read
@@ -23,14 +25,8 @@ jobs:
       - name: Login to ECR Repo
         run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 730335485292.dkr.ecr.us-east-1.amazonaws.com
       - name: Build image
-        env:
-          IMAGE_TAG: ${{ github.sha }}
         run: docker build -t online-shop-image-repo:$IMAGE_TAG .
       - name: Tag docker image
-        env:
-          IMAGE_TAG: ${{ github.sha }}
         run: docker tag online-shop-image-repo:$IMAGE_TAG 730335485292.dkr.ecr.us-east-1.amazonaws.com/online-shop-image-repo:$IMAGE_TAG
       - name: Push Docker image
-        env:
-          IMAGE_TAG: ${{ github.sha }}
         run: docker push 730335485292.dkr.ecr.us-east-1.amazonaws.com/online-shop-image-repo:$IMAGE_TAG

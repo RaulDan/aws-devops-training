@@ -13,7 +13,7 @@ resource "aws_launch_template" "online-shop-launch-template" {
         postgres_password = "postgres",
         postgres_url      = aws_db_instance.online_shop_db.endpoint,
         redis_url         = aws_elasticache_cluster.online-shop-elastic-cache.cache_nodes[0].address,
-        commit-hash = "7a883829c1c6ba42c481976aa382bec53f532a80",
+        commit-hash = var.commit-hash,
         repo_url = aws_ecr_repository.online-shop-repo.repository_url
         account_id = data.aws_caller_identity.aws_credentials.account_id
         region = data.aws_region.used_region.name

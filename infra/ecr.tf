@@ -52,9 +52,13 @@ resource "aws_iam_role_policy" "git-push-image-policy" {
           "ecr:UploadLayerPart",
           "ecr:InitiateLayerUpload",
           "ecr:BatchCheckLayerAvailability",
-          "ecr:PutImage",
-          "ecr:GetAuthorizationToken"
+          "ecr:PutImage"
         ],
+        "Resource":aws_ecr_repository.online-shop-repo.arn
+      },
+      {
+        "Effect": "Allow",
+        "Action": "ecr:GetAuthorizationToken",
         "Resource": "*"
       }
     ]
@@ -86,7 +90,6 @@ resource "aws_iam_role_policy" "ec2_pull_docker_images_policy" {
       {
         "Effect": "Allow",
         "Action": [
-          "ecr:GetAuthorizationToken",
           "ecr:BatchCheckLayerAvailability",
           "ecr:GetDownloadUrlForLayer",
           "ecr:GetRepositoryPolicy",
@@ -95,6 +98,11 @@ resource "aws_iam_role_policy" "ec2_pull_docker_images_policy" {
           "ecr:DescribeImages",
           "ecr:BatchGetImage"
         ],
+        "Resource": aws_ecr_repository.online-shop-repo.arn
+      },
+      {
+        "Effect": "Allow",
+        "Action": "ecr:GetAuthorizationToken",
         "Resource": "*"
       }
     ]

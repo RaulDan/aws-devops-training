@@ -6,6 +6,7 @@ on:
 
 env:
   IMAGE_TAG: ${{ github.sha }}
+
 permissions:
   id-token: write
   contents: read

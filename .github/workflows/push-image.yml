@@ -2,7 +2,7 @@ name: Push Docker Image for ECR
 
 on:
   push:
-    branches: ["module-3-part-1"]
+    branches: ["module-3"]
 
 env:
   IMAGE_TAG: ${{ github.sha }}

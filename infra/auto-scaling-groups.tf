@@ -3,16 +3,22 @@ resource "aws_launch_template" "online-shop-launch-template" {
   image_id               = data.aws_ami.amazon-linux-2.id
   instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.online_shop_backend.id]
-  #  key_name               = data.aws_key_pair.online-shop-key-pair.key_name
   key_name = var.ssh_key_pair
-  user_data = base64encode(
-    templatefile("./user-data-script/user_data_script.tftpl", {
-      postgres_user     = "postgres",
-      postgres_password = "postgres",
-      postgres_url      = aws_db_instance.online_shop_db.endpoint,
-      redis_url         = aws_elasticache_cluster.online-shop-elastic-cache.cache_nodes[0].address
-    })
-  )
+  iam_instance_profile {
+    arn = aws_iam_instance_profile.ec2_profile.arn
+  }
+    user_data = base64encode(
+      templatefile("./user-data-script/user_data_script.tftpl", {
+        postgres_user     = "postgres",
+        postgres_password = "postgres",
+        postgres_url      = aws_db_instance.online_shop_db.endpoint,
+        redis_url         = aws_elasticache_cluster.online-shop-elastic-cache.cache_nodes[0].address,
+        commit-hash = var.commit-hash,
+        repo_url = aws_ecr_repository.online-shop-repo.repository_url
+        account_id = data.aws_caller_identity.aws_credentials.account_id
+        region = data.aws_region.used_region.name
+      })
+    )
   tags = {
     Version = var.app_version
   }
@@ -56,8 +62,5 @@ resource "aws_lb_listener" "elb-listener" {
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.online_shop_target_group.arn
-  }
-  lifecycle {
-    prevent_destroy = true
   }
 }

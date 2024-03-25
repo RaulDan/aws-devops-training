@@ -27,3 +27,7 @@ output "application-base-port" {
   value = aws_lb_listener.elb-listener.port
 }
 
+output "image-repo-url" {
+  value = aws_ecr_repository.online-shop-repo.repository_url
+}
+

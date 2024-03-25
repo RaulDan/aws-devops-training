@@ -15,3 +15,7 @@ data "aws_ami" "amazon-linux-2" {
 data "http" "myIp" {
   url = "http://icanhazip.com/"
 }
+
+data "aws_caller_identity" "aws_credentials" {}
+
+data "aws_region" "used_region" {}

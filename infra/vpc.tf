@@ -4,9 +4,6 @@ locals {
 
 resource "aws_vpc" "online-shop-vpc" {
   cidr_block = "10.0.0.0/16"
-  lifecycle {
-    prevent_destroy = true
-  }
   tags = {
     Name = "VPC for online shop app"
   }

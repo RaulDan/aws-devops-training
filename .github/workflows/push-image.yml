@@ -1,0 +1,33 @@
+name: Push Docker Image for ECR
+
+on:
+  push:
+    branches: ["module-3"]
+
+env:
+  IMAGE_TAG: ${{ github.sha }}
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  image-build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone repository
+        uses: actions/checkout@v3
+      - name: Confiugre AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+          role-session-name: connect-session
+          role-to-assume: arn:aws:iam::730335485292:role/OnlineShopCiCdPipeline
+      - name: Login to ECR Repo
+        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 730335485292.dkr.ecr.us-east-1.amazonaws.com
+      - name: Build image
+        run: docker build -t online-shop-image-repo:$IMAGE_TAG .
+      - name: Tag docker image
+        run: docker tag online-shop-image-repo:$IMAGE_TAG 730335485292.dkr.ecr.us-east-1.amazonaws.com/online-shop-image-repo:$IMAGE_TAG
+      - name: Push Docker image
+        run: docker push 730335485292.dkr.ecr.us-east-1.amazonaws.com/online-shop-image-repo:$IMAGE_TAG

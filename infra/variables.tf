@@ -36,4 +36,7 @@ variable "app_version" {}
 
 variable "ssh_key_pair" {}
 
-variable "commit-hash" {type= string}
+variable "commit-hash" {
+  type= string
+  default = ""
+}

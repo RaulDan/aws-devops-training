@@ -26,8 +26,7 @@ resource "aws_iam_role" "cicd_pipeline" {
         "Principal" : {
           "Federated" : aws_iam_openid_connect_provider.github_actions.arn
         },
-        "Action" : "*",
-        "Resource": "*",
+        "Action" : "sts:AssumeRoleWithWebIdentity",
         "Condition" : {
           "StringLike" : {
             "token.actions.githubusercontent.com:aud" : "sts.amazonaws.com",
@@ -65,3 +64,4 @@ resource "aws_iam_role_policy" "git-push-image-policy" {
     ]
   })
 }
+

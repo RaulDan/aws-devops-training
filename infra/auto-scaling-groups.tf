@@ -1,24 +1,17 @@
 resource "aws_launch_template" "online-shop-launch-template" {
   name                   = "launch_template_for_online_shop"
-  image_id               = data.aws_ami.amazon-linux-2.id
+  image_id               = data.aws_ssm_parameter.ecs_optimized_ami.value
   instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.online_shop_backend.id]
-  key_name = var.ssh_key_pair
+  key_name               = var.ssh_key_pair
   iam_instance_profile {
-    arn = aws_iam_instance_profile.ec2_profile.arn
+    arn = aws_iam_instance_profile.ecs-ec2-instance-profile.arn
   }
-    user_data = base64encode(
-      templatefile("./user-data-script/user_data_script.tftpl", {
-        postgres_user     = "postgres",
-        postgres_password = "postgres",
-        postgres_url      = aws_db_instance.online_shop_db.endpoint,
-        redis_url         = aws_elasticache_cluster.online-shop-elastic-cache.cache_nodes[0].address,
-        commit-hash = var.commit-hash,
-        repo_url = aws_ecr_repository.online-shop-repo.repository_url
-        account_id = data.aws_caller_identity.aws_credentials.account_id
-        region = data.aws_region.used_region.name
-      })
-    )
+  user_data = base64encode(
+    templatefile("./template-files/user_data_script.tftpl", {
+      cluster_name = aws_ecs_cluster.online-shop-cluster.name
+    })
+  )
   tags = {
     Version = var.app_version
   }
@@ -31,7 +24,7 @@ resource "aws_autoscaling_group" "online-shop-asg" {
   vpc_zone_identifier       = [for subnet in aws_subnet.public_subnets : subnet.id]
   health_check_grace_period = 300
   health_check_type         = "ELB"
-  target_group_arns         = [aws_lb_target_group.online_shop_target_group.arn]
+  name = "online-shop-asg"
   launch_template {
     id      = aws_launch_template.online-shop-launch-template.id
     version = "$Latest"
@@ -50,7 +43,7 @@ resource "aws_lb" "online-shop-elb" {
 resource "aws_lb_target_group" "online_shop_target_group" {
   name        = "online-shop-target-group"
   port        = 8080
-  target_type = "instance"
+  target_type = "ip"
   protocol    = "HTTP"
   vpc_id      = aws_vpc.online-shop-vpc.id
 }

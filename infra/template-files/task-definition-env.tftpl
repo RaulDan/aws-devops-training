@@ -1,0 +1,28 @@
+
+         [
+              {
+                "name":"SPRING_DATASOURCE_USERNAME",
+                "value":"${postgres_user}"
+              },
+              {
+                  "name":"SPRING_DATASOURCE_PASSWORD",
+                  "value":"${postgres_password}"
+              },
+              {
+                  "name":"SPRING_DATASOURCE_URL",
+                  "value":"jdbc:postgresql://${postgres_url}/postgres"
+              },
+              {
+                  "name":"SPRING_SESSION_STORETYPE",
+                  "value":"redis"
+              },
+              {
+                  "name":"SPRING_REDIS_HOST", "value":"${redis_url}"
+              },
+              {
+                  "name":"SPRING_REDIS_PORT", "value":"6379"
+              },
+              {
+                  "name":"SPRING_SESSION_REDIS_CONFIGUREACTION", "value":"none"
+              }
+        ]

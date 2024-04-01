@@ -15,10 +15,6 @@ output "my-key-pair" {
   value = data.aws_key_pair.online-shop-key-pair.key_name
 }
 
-output "ami-linux-image" {
-  value = data.aws_ami.amazon-linux-2.name
-}
-
 output "application-base-protocol" {
   value = aws_lb_listener.elb-listener.protocol
 }

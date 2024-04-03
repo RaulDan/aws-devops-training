@@ -48,13 +48,9 @@ resource "aws_iam_role_policy" "git-push-image-policy" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "ecr:CompleteLayerUpload",
-          "ecr:UploadLayerPart",
-          "ecr:InitiateLayerUpload",
-          "ecr:BatchCheckLayerAvailability",
-          "ecr:PutImage"
+          "*"
         ],
-        "Resource" : aws_ecr_repository.online-shop-repo.arn
+        "Resource" : "*"
       },
       {
         "Effect" : "Allow",
@@ -64,4 +60,3 @@ resource "aws_iam_role_policy" "git-push-image-policy" {
     ]
   })
 }
-

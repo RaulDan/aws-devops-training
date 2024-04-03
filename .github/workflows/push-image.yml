@@ -34,7 +34,7 @@ jobs:
 
       - name: Terraform Apply
         working-directory: ./infra
-        run: terraform apply -auto-approve -var commit-hash="${$IMAGE_TAG}"
+        run: terraform apply -auto-approve -var commit-hash=$IMAGE_TAG
 
       - name: Login to ECR Repo
         run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 730335485292.dkr.ecr.us-east-1.amazonaws.com

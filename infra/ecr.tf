@@ -38,8 +38,8 @@ resource "aws_iam_role" "cicd_pipeline" {
   })
 }
 
-resource "aws_iam_role_policy" "git-push-image-policy" {
-  name = "git-push-image-policy"
+resource "aws_iam_role_policy" "git-connect-policy" {
+  name = "git-connect-policy"
   role = aws_iam_role.cicd_pipeline.id
 
   policy = jsonencode({
@@ -50,11 +50,6 @@ resource "aws_iam_role_policy" "git-push-image-policy" {
         "Action" : [
           "*"
         ],
-        "Resource" : "*"
-      },
-      {
-        "Effect" : "Allow",
-        "Action" : "ecr:GetAuthorizationToken",
         "Resource" : "*"
       }
     ]
